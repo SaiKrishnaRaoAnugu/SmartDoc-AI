@@ -1,9 +1,9 @@
-import streamlit as st
 import os
 import shutil
 import atexit
 import logging
 import warnings
+import streamlit as st
 from utils.loader import load_and_split_pdf
 from utils.embeddings import create_or_load_vectorstore
 from langchain_ollama import OllamaLLM
@@ -51,7 +51,7 @@ st.set_page_config(
 )
 
 # =========================================================
-# UPDATED PROFESSIONAL UI 
+# PROFESSIONAL UI 
 # =========================================================
 
 st.markdown("""
