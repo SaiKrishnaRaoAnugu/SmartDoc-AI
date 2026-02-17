@@ -11,6 +11,21 @@ It enables users to upload PDF documents and ask intelligent questions powered b
 
 ---
 
+## 💡 Why This Project?
+
+SmartDoc AI demonstrates:
+
+- Practical implementation of Retrieval-Augmented Generation (RAG)
+- Local LLM deployment using Ollama (no external API dependency)
+- Vector similarity search with FAISS
+- Intelligent intent routing architecture
+- Clean and production-style UI design
+- Reproducible dependency management
+- Privacy-focused document intelligence for sensitive or confidential files
+
+This project is especially useful when working with important or confidential documents that cannot be uploaded to external AI services such as ChatGPT or other cloud-based LLMs. All processing happens locally, ensuring full data control and enhanced security.
+
+
 ## 🚀 Features
 
 - Local LLM integration using Mistral (via Ollama)
