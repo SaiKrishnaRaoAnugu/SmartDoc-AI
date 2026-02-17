@@ -2,10 +2,23 @@ import streamlit as st
 import os
 import shutil
 import atexit
+import logging
+import warnings
 from utils.loader import load_and_split_pdf
 from utils.embeddings import create_or_load_vectorstore
 from langchain_ollama import OllamaLLM
 
+
+
+# Silence Python warnings
+warnings.filterwarnings("ignore")
+
+# Silence Torch internal logs
+logging.getLogger("torch").setLevel(logging.ERROR)
+logging.getLogger("sentence_transformers").setLevel(logging.ERROR)
+
+# Optional: reduce transformers verbosity
+os.environ["TRANSFORMERS_VERBOSITY"] = "error"
 
 # =========================================================
 # CLEANUP FUNCTION
@@ -37,43 +50,56 @@ st.set_page_config(
     page_icon="📄"
 )
 
-
 # =========================================================
-# MODERN UI STYLING
+# UPDATED PROFESSIONAL UI 
 # =========================================================
 
 st.markdown("""
 <style>
 
-.main > div {
-    max-width: 900px;
-    margin: auto;
+/* Remove Streamlit center constraint */
+.block-container {
+    padding-top: 2rem;
+    padding-left: 4rem;
+    padding-right: 4rem;
+    max-width: 100%;
 }
 
+/* Background */
 .stApp {
     background: linear-gradient(180deg, #0E1117 0%, #0B0F16 100%);
 }
 
+/* Sidebar */
 section[data-testid="stSidebar"] {
     background-color: #0F172A;
 }
 
-.block-container {
-    padding-top: 2rem;
-}
-
+/* Chat bubbles */
 div[data-testid="stChatMessage"] {
     border-radius: 18px;
     padding: 14px 20px;
-    margin-bottom: 12px;
+    margin-bottom: 14px;
 }
 
+/* Chat input */
 div[data-testid="stChatInput"] {
-    border-radius: 20px;
+    border-radius: 18px;
 }
 
+/* Buttons */
 .stButton>button {
     border-radius: 8px;
+}
+
+/* Divider */
+hr {
+    border: 0.5px solid #1F2937;
+}
+            
+/* Remove Streamlit top header glow */
+header[data-testid="stHeader"] {
+    display: none;
 }
 
 </style>
@@ -117,16 +143,16 @@ with st.sidebar:
 
 
 # =========================================================
-# HEADER
+# HEADER 
 # =========================================================
 
 st.markdown("""
-<div style="margin-bottom:25px;">
+<div style="margin-bottom:30px;">
     <h1 style="
-        font-size:38px;
-        margin-bottom:4px;
+        font-size:36px;
+        margin-bottom:6px;
         font-weight:700;
-        letter-spacing: -0.5px;
+        letter-spacing:-0.5px;
     ">
         SmartDoc AI
     </h1>
@@ -140,8 +166,7 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-st.divider()
-
+st.markdown("<hr>", unsafe_allow_html=True)
 
 
 # =========================================================
@@ -175,12 +200,11 @@ if uploaded_file is not None:
 
 
 # =========================================================
-# CHAT SECTION
+# CHAT SECTION 
 # =========================================================
 
 if st.session_state.vectorstore is not None:
 
-    # Render existing chat history
     for message in st.session_state.messages:
         with st.chat_message(message["role"]):
             st.markdown(message["content"])
@@ -189,23 +213,19 @@ if st.session_state.vectorstore is not None:
 
     if prompt:
 
-        # 1️⃣ Add user message to session
         st.session_state.messages.append(
             {"role": "user", "content": prompt}
         )
 
-        # 2️⃣ Immediately render user message
         with st.chat_message("user"):
             st.markdown(prompt)
 
-        # 3️⃣ Create assistant placeholder
         assistant_placeholder = st.empty()
 
         with assistant_placeholder.container():
             with st.chat_message("assistant"):
                 with st.spinner("🤖 Thinking..."):
 
-                    # ----- CLASSIFIER -----
                     llm_classifier = OllamaLLM(
                         model="mistral",
                         temperature=0,
@@ -250,7 +270,7 @@ Message: {prompt}
                         llm_rag = OllamaLLM(
                             model="mistral",
                             temperature=0.1,
-                            num_predict= 500
+                            num_predict=500
                         )
 
                         full_prompt = f"""
@@ -270,7 +290,6 @@ Answer:
 
                 st.markdown(response)
 
-        # 4️⃣ Save assistant message AFTER rendering
         st.session_state.messages.append(
             {"role": "assistant", "content": response}
         )
