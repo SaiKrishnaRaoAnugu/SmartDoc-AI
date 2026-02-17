@@ -253,7 +253,7 @@ Message: {prompt}
                         llm_general = OllamaLLM(
                             model="mistral",
                             temperature=0.2,
-                            num_predict=100
+                            num_predict=1000
                         )
                         response = llm_general.invoke(prompt)
 
@@ -270,7 +270,7 @@ Message: {prompt}
                         llm_rag = OllamaLLM(
                             model="mistral",
                             temperature=0.1,
-                            num_predict=500
+                            num_predict=5000
                         )
 
                         full_prompt = f"""
