@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual Environments
+venv/
+env/
+smartdoc_env/
+
+# Streamlit
+.streamlit/
+
+# Vector database & uploaded files
+vectorstore/
+data/
+
+# OS files
+.DS_Store
+Thumbs.db
