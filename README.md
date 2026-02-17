@@ -1,3 +1,8 @@
+
+<p align="center">
+  <img src="assets/main-ui.png" alt="SmartDoc AI UI" width="100%">
+</p>
+
 # SmartDoc AI
 
 SmartDoc AI is a local Retrieval-Augmented Generation (RAG) based document intelligence assistant built using Streamlit, LangChain, FAISS, and Mistral via Ollama.
